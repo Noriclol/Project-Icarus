@@ -2,17 +2,34 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class New : MonoBehaviour
+
+
+public struct MeshGrid
 {
+    
+}
+
+
+public class MeshGridGenerator : MonoBehaviour
+{
+    
+    
+    
+    
     // Start is called before the first frame update
     void Start()
     {
-        
+        Generator();
     }
 
-    // Update is called once per frame
-    void Update()
+    
+    
+    
+    private void Generator()
     {
         
     }
+    
+    
+    
 }
