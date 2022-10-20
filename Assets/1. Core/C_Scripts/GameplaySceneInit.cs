@@ -13,7 +13,7 @@ public class GameplaySceneInit : MonoBehaviour
         switch (_type)
         {
             case SceneInitType.Gameplay:
-                Main._gameManager.GameInit();
+                Main.GameManager.GameInit();
                 break;
         }
     }

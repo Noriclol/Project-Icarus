@@ -2,7 +2,7 @@
     using UnityEngine;
     using UnityEngine.InputSystem;
 
-    public class InputManager
+    public class InputManager : MonoBehaviour
 {
     
     

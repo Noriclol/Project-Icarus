@@ -11,18 +11,18 @@ public class Main : MonoBehaviour
     
     
     
-    
-    
-    
     // region  Components - BEGIN
 
     private static Main instance;
 
-    private ProgramState _state;
+    //private ProgramState _state;
 
     
-    public static InputManager _inputManager;
-    public static GameManager _gameManager;
+    public static InputManager InputManager;
+    
+    public static GameManager GameManager;
+
+    public static LevelManager SceneHandler;
     // region  Components - END
     
     
@@ -32,11 +32,10 @@ public class Main : MonoBehaviour
     {
         InstanceCheck();
 
-        _inputManager = GetComponent<InputManager>();
+        InputManager = GetComponent<InputManager>();
         
         
         //field Initialization
-        _state = ProgramState.DefaultStart;
         
     }
 
@@ -53,7 +52,20 @@ public class Main : MonoBehaviour
 
 
     
-    
+    public static void Instantiate_Main()
+    {
+        GameObject main = GameObject.Instantiate(Resources.Load("Main")) as GameObject;
+        GameObject.DontDestroyOnLoad(main);
+        Debug.Log("Main Loaded");
+    }
+
+
+    public static void Instantiate_GameManager()
+    {
+        GameObject main = GameObject.Instantiate(Resources.Load("GameManager")) as GameObject;
+        GameObject.DontDestroyOnLoad(main);
+        Debug.Log("GameManager Loaded");
+    }
     
     
     
@@ -84,57 +96,17 @@ public class Main : MonoBehaviour
     
     //Load before load type
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-    private void Load_BeforeSceneLoad()
+    private static void Load_BeforeSceneLoad()
     {
-        switch (_state)
-        {
-            //Can be used to control which state of the game to run.
-            //For now only have defaultstart state until proper implementation.
-            
-            case ProgramState.DefaultStart:
-                
-                break;
-            
-
-        }
+        Instantiate_Main();
     }
     
     //Load after load type
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
-    private void PostLoad_AfterSceneLoad()
+    private static void PostLoad_AfterSceneLoad()
     {
-        switch (_state)
-        {
-            //Can be used to control which state of the game to run.
-            //For now only have defaultstart state until proper implementation.
-            
-            case ProgramState.DefaultStart:
-                
-                break;
-            
 
-        }
     }
     
     // region  Initialization - END
-
-    
-    
-    
-    
-    
-    // region  Enums - BEGIN
-    
-    
-    enum  ProgramState
-    {
-        Boot,
-        
-        DefaultStart,
-        Menu,
-        Game,
-    }
-    
-    
-    // region  Enums - END
 }
