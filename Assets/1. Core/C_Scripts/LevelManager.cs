@@ -1,18 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
+//Handles the loading of Scenes in The Game
 public class LevelManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public void Load(string sceneName)
     {
-        
+        SceneManager.LoadScene(sceneName);
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    
 }

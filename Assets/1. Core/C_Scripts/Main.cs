@@ -1,8 +1,9 @@
 using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 
-
+//main is the kernel of the core systems and it is responsible for instantiating the Core Arcitecture systems
 public class Main : MonoBehaviour
 {
 
@@ -17,12 +18,15 @@ public class Main : MonoBehaviour
 
     //private ProgramState _state;
 
+    //Core Components
     
     public static InputManager InputManager;
     
-    public static GameManager GameManager;
-
-    public static LevelManager SceneHandler;
+    public static LevelManager LevelManager;
+    
+    //GameManager
+    
+    public GameManager GameManager;
     // region  Components - END
     
     
@@ -33,10 +37,11 @@ public class Main : MonoBehaviour
         InstanceCheck();
 
         InputManager = GetComponent<InputManager>();
+        LevelManager = GetComponent<LevelManager>();
         
-        
+
         //field Initialization
-        
+
     }
 
 
@@ -62,9 +67,12 @@ public class Main : MonoBehaviour
 
     public static void Instantiate_GameManager()
     {
-        GameObject main = GameObject.Instantiate(Resources.Load("GameManager")) as GameObject;
-        GameObject.DontDestroyOnLoad(main);
+        GameObject gameManager = GameObject.Instantiate(Resources.Load("GameManager")) as GameObject;
+        GameObject.DontDestroyOnLoad(gameManager);
         Debug.Log("GameManager Loaded");
+
+        instance.GameManager = gameManager.GetComponent<GameManager>();
+
     }
     
     
@@ -105,7 +113,7 @@ public class Main : MonoBehaviour
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
     private static void PostLoad_AfterSceneLoad()
     {
-
+        Instantiate_GameManager();
     }
     
     // region  Initialization - END

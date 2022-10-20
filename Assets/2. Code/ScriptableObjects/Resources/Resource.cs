@@ -6,11 +6,12 @@ using UnityEngine;
 public class Resource : ScriptableObject
 {
     public new string name;
-    public E_ResouceType type;
+    public ResouceType type;
 }
 
-public enum E_ResouceType
+public enum ResouceType
 {
     Ore,
     Wood,
 }
+

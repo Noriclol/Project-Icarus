@@ -1,37 +1,80 @@
+using System.Collections.Generic;
 using UnityEngine;
 
-namespace Assets.ProjectVoyager.City
+
+public class CityHandler : MonoBehaviour
 {
-    public class CityHandler : MonoBehaviour
+
+    [Header("CityFields")]
+    
+    [SerializeField]
+    private string cityName;
+
+    [SerializeField]
+    private int population = 0;
+    
+    [SerializeField]
+    private int StarterBuildings = 5;
+    
+    [SerializeField]
+    private Stockpile Stockpile;
+    
+    [SerializeField]
+    private CityBuildings Buildings;
+
+    private List<Resource> nearbyResources;
+
+
+
+
+    [Header("buildingRefs")]
+    //building Refs
+    [SerializeField]
+    private Building house;
+    
+    [SerializeField]
+    private Building townHall;
+    
+    [SerializeField]
+    private Building market;
+    
+    [SerializeField]
+    private Building woodCutter;
+
+    [SerializeField]
+    private Building mine;
+    
+
+    //Properties
+    
+    public string CityName { get => cityName; }
+    public int Population { get => population; } 
+    
+    
+    
+    
+    
+    public void InitializeCity()
     {
-        #region Vars
-        public string Name;
-        public int Population = 0;
-        public Stockpile Stockpile;
-        public CityBuildings Buildings;
-
-        //Building<List> buildings;
-        #endregion
-
-        #region Refs
-
-        public GameObject CityGFX;
-
-
-        #endregion
-
-
-        public void InitializeCity(){}
-
-        public void UpdateCity()
+        Buildings.CreateBuilding(townHall);
+        for (int i = 0; i < StarterBuildings; i++)
         {
-            Stockpile.UpdateStockpile(Buildings.GatheringBuildings, Buildings.ProcessingBuildings);
-
+            Buildings.CreateBuilding(house);
         }
+        Buildings.CreateBuilding(market);
+        Buildings.CreateBuilding(woodCutter);
+        Buildings.CreateBuilding(mine);
+    }
 
-        //public void UpdateMaterials(){}
-        //private Resource<List> FindNearbyResources(){}
-
+    public void UpdateCity()
+    {
+        Stockpile.UpdateStockpile(Buildings.GatheringBuildings, Buildings.ProcessingBuildings);
 
     }
+
+    //public void UpdateMaterials(){}
+    //private Resource<List> FindNearbyResources(){}
+
+
 }
+

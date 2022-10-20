@@ -94,7 +94,8 @@ MonoBehaviour:
   MinHeight: 0
   MaxHeight: 0
   OnInspectorEditorBoolCheck: 0
-  CityInstance: {fileID: 0}
+  CityInstance: {fileID: 5960730876197631886, guid: 67f9d37c7201fdb4a91fba3cb5d0659d,
+    type: 3}
 --- !u!1 &3496129603738450697
 GameObject:
   m_ObjectHideFlags: 0
@@ -173,3 +174,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0eaedcef7f5cafc4a9ddb528086cd7a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Generators: {fileID: 2728710196418781224}
+  Managers: {fileID: 1426680664002521791}
+  Instances: {fileID: 3496129603738450697}
