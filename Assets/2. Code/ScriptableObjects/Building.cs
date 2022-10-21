@@ -11,6 +11,7 @@ public class Building : ScriptableObject
     {
         throw new System.NotImplementedException();
     }
+    
 }
 
 public enum E_BuildingType

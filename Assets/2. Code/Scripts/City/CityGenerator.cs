@@ -4,150 +4,148 @@ using System.Globalization;
 using JetBrains.Annotations;
 using UnityEngine;
 
-namespace Assets.ProjectVoyager.City
+
+public class CityGenerator : MonoBehaviour
 {
-    public class CityGenerator : MonoBehaviour
+    public static int chunkSize = 100;
+
+    public int Seed;
+
+    public float MinHeight;
+    public float MaxHeight;
+
+    public  bool OnInspectorEditorBoolCheck = false;
+
+    public static int Cities = 10;
+    int nonPlacedCities = Cities;
+
+
+    public ChunkData[,] DataGrid;
+    public int[,] posCoords;
+
+    public GameObject CityInstance;
+
+
+
+    private List<CityHandler> cityHandlers;
+
+
+    public void RunGenerator()
     {
-        public static int chunkSize = 100;
-	
-        public int Seed;
+        RefreshGenerator();
 
-        public float MinHeight;
-        public float MaxHeight;
+        GenerateInfoGrid();
+        PlaceLocationPositions();
+        GenerateLocations();
+    }
 
-        public  bool OnInspectorEditorBoolCheck = false;
-
-        public static int Cities = 10;
-        int nonPlacedCities = Cities;
-
-
-        public ChunkData[,] DataGrid;
-        public int[,] posCoords;
-
-        public GameObject CityInstance;
-
-
-
-        private List<CityHandler> cityHandlers;
-
-
-        public void RunGenerator()
+    public void RefreshGenerator()
+    {
+        foreach (var script in cityHandlers)
         {
-            RefreshGenerator();
-
-            GenerateInfoGrid();
-            PlaceLocationPositions();
-            GenerateLocations();
+            Destroy(script.gameObject);
         }
+    }
 
-        public void RefreshGenerator()
+    public bool allBuildingsPlaced() {
+
+        if (
+            nonPlacedCities == 0
+        )
         {
-            foreach (var script in cityHandlers)
-            {
-                Destroy(script.gameObject);
+            return true;
+        }
+        return false;
+    }
+
+    public void SubTractNonPlacedCities()
+    {
+        nonPlacedCities--;
+    }
+
+    public void GenerateInfoGrid() {
+
+        System.Random seed = new System.Random(Seed);
+
+        posCoords = new int[chunkSize, chunkSize];
+        DataGrid = new ChunkData[chunkSize, chunkSize];
+
+        for (int y = 0; y < chunkSize; y++) {
+            for (int x = 0; x < chunkSize; x++) {
+
+                ChunkData chunkData = new ChunkData();
+                chunkData.Populate();
+
+                DataGrid[x, y] = chunkData;
             }
         }
+    }
 
-        public bool allBuildingsPlaced() {
+    public void PlaceLocationPositions()
+    {
+        while (allBuildingsPlaced()) {
 
-            if (
-                nonPlacedCities == 0
-            )
-            {
-                return true;
-            }
-            return false;
-        }
-
-        public void SubTractNonPlacedCities()
-        {
-            nonPlacedCities--;
-        }
-
-        public void GenerateInfoGrid() {
-
-            System.Random seed = new System.Random(Seed);
-
-            posCoords = new int[chunkSize, chunkSize];
-            DataGrid = new ChunkData[chunkSize, chunkSize];
+            allBuildingsPlaced();
 
             for (int y = 0; y < chunkSize; y++) {
                 for (int x = 0; x < chunkSize; x++) {
 
-                    ChunkData chunkData = new ChunkData();
-                    chunkData.Populate();
+                    int roll = Random.Range(0, 100);
 
-                    DataGrid[x, y] = chunkData;
-                }
-            }
-        }
+                    float percentage = Cities / chunkSize;
 
-        public void PlaceLocationPositions()
-        {
-            while (allBuildingsPlaced()) {
-
-                allBuildingsPlaced();
-
-                for (int y = 0; y < chunkSize; y++) {
-                    for (int x = 0; x < chunkSize; x++) {
-
-                        int roll = Random.Range(0, 100);
-
-                        float percentage = Cities / chunkSize;
-
-                        if (roll >= percentage && DataGrid[x, y].settled)
-                        {
-                            DataGrid[x, y].Populate();
-                        }
-                    }
-                }
-                SubTractNonPlacedCities();
-            }
-        }
-
-        public void GenerateLocations()
-        {
-            GenerateCities();
-        }
-
-        public void GenerateCities()
-        {
-            for (int y = 0; y < chunkSize; y++)
-            {
-                for (int x = 0; x < chunkSize; x++)
-                {
-                    if (DataGrid[x, y].settled)
+                    if (roll >= percentage && DataGrid[x, y].settled)
                     {
-                        var instance = Instantiate(CityInstance, new Vector3(x, 0, y), Quaternion.identity);
-                        var script = instance.GetComponent<CityHandler>();
-                        cityHandlers.Add(script);
-
-                        script.InitializeCity();
-                        script.UpdateCity();
+                        DataGrid[x, y].Populate();
                     }
+                }
+            }
+            SubTractNonPlacedCities();
+        }
+    }
+
+    public void GenerateLocations()
+    {
+        GenerateCities();
+    }
+
+    public void GenerateCities()
+    {
+        for (int y = 0; y < chunkSize; y++)
+        {
+            for (int x = 0; x < chunkSize; x++)
+            {
+                if (DataGrid[x, y].settled)
+                {
+                    var instance = Instantiate(CityInstance, new Vector3(x, 0, y), Quaternion.identity);
+                    var script = instance.GetComponent<CityHandler>();
+                    cityHandlers.Add(script);
+
+                    script.InitializeCity();
+                    script.UpdateCity();
                 }
             }
         }
     }
+}
 
 
 
 
-    public class ChunkData
+public class ChunkData
+{
+    //public E_Biome biome;
+    public bool settled;
+
+    public void Populate()
     {
-        //public E_Biome biome;
-        public bool settled;
-
-        public void Populate()
-        {
-            settled = true;
-        }
+        settled = true;
     }
+}
 
-    public class CityInstance
-    {
-        public CityHandler Handler;
-        public Vector3 Position;
+public class CityInstance
+{
+    public CityHandler Handler;
+    public Vector3 Position;
 
-    }
 }
