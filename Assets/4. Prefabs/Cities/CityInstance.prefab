@@ -77,9 +77,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4431340ca381eb141886760457ad4658, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: 
-  Population: 0
-  CityGFX: {fileID: 0}
+  cityName: 
+  population: 0
+  StarterBuildings: 5
+  house: {fileID: 11400000, guid: f1091522b970e7f42b13392f319b0419, type: 2}
+  townHall: {fileID: 11400000, guid: 213ff4b470fdc1d44bbb9ed4f3611743, type: 2}
+  market: {fileID: 11400000, guid: d929659a8e6dcce49aa3e30d73f0bf6d, type: 2}
+  woodCutter: {fileID: 11400000, guid: fcca314a97a65f7409315115d5f66aee, type: 2}
+  mine: {fileID: 11400000, guid: e8d7e168f280ee742b74095d7ea8a384, type: 2}
 --- !u!1 &5960730877477813780
 GameObject:
   m_ObjectHideFlags: 0

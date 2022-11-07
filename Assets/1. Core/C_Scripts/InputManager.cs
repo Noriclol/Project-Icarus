@@ -1,5 +1,6 @@
     using System;
     using UnityEngine;
+    using UnityEngine.Assertions.Must;
     using UnityEngine.InputSystem;
 
     public class InputManager : MonoBehaviour
@@ -46,11 +47,11 @@
     
     // region  EventActions - BEGIN
     
-    public event Action<Vector2> Move = delegate { };
+    public static event Action<Vector2> Move = delegate { };
     
-    public event Action Jump = delegate {  };
+    public static event Action Jump = delegate {  };
     
-    public event Action Interact = delegate { };
+    public static event Action Interact = delegate { };
     
     
     
@@ -63,10 +64,10 @@
     
     // region  Events - BEGIN
     
-    private void EVENT_PLAYER_MOVEMENT() => Move.Invoke(KEYBOARD_WASD.ReadValue<Vector2>());
+    private void EVENT_PLAYER_MOVEMENT(InputAction.CallbackContext ctx) => Move.Invoke(KEYBOARD_WASD.ReadValue<Vector2>());
 
-    private void EVENT_PLAYER_JUMP() => Jump.Invoke();
-    private void EVENT_PLAYER_INTERACT() => Interact.Invoke();
+    private void EVENT_PLAYER_JUMP(InputAction.CallbackContext ctx) => Jump.Invoke();
+    private void EVENT_PLAYER_INTERACT(InputAction.CallbackContext ctx) => Interact.Invoke();
     
     
     // region  Events - END
@@ -92,22 +93,33 @@
     {
         input.Enable();
 
-        // KEYBOARD_WASD = input.Player.Movment;
-        // KEYBOARD_SPACEBAR = input.Player.Jump;
+        KEYBOARD_WASD = input.Player.Movement;
+        KEYBOARD_SPACEBAR = input.Player.Jump;
+        KEYBOARD_E = input.Player.Interact;
         
         KEYBOARD_WASD.Enable();
         KEYBOARD_SPACEBAR.Enable();
         KEYBOARD_E.Enable();
         
+        KEYBOARD_WASD.performed += EVENT_PLAYER_MOVEMENT;
+        KEYBOARD_SPACEBAR.performed += EVENT_PLAYER_JUMP;
+        KEYBOARD_E.performed += EVENT_PLAYER_INTERACT;
     }
 
     private void OnDisable()
     {
         input.Disable();
         
+        KEYBOARD_WASD.Disable();
+        KEYBOARD_SPACEBAR.Disable();
+        KEYBOARD_E.Disable();
+        
+        KEYBOARD_WASD.performed -= EVENT_PLAYER_MOVEMENT;
+        KEYBOARD_SPACEBAR.performed -= EVENT_PLAYER_JUMP;
+        KEYBOARD_E.performed -= EVENT_PLAYER_INTERACT;
     }
 
-    // region  Core - BEGIN
 
+    // region  Core - END
 
 }

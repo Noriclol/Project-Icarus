@@ -1,77 +1,101 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using JetBrains.Annotations;
+using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.Serialization;
+using Random = UnityEngine.Random;
 
 
 public class CityGenerator : MonoBehaviour
 {
-    public static int chunkSize = 100;
 
-    public int Seed;
+    [Header("CityPrefab")]
+    public GameObject CityInstance;
 
-    public float MinHeight;
-    public float MaxHeight;
+    [Header("ManagerRef")] 
+    private CityManager manager;
+    
+    [Header("Fields")][Space]
+    [Header("Spawning")]
+    
+    [SerializeField]
+    private int spawnAreaSize = 100;
 
-    public  bool OnInspectorEditorBoolCheck = false;
+    [SerializeField]
+    private int seed;
 
-    public static int Cities = 10;
-    int nonPlacedCities = Cities;
+    [SerializeField]
+    private int amount = 10;
+    
+    private int spawnCount;
 
 
     public ChunkData[,] DataGrid;
     public int[,] posCoords;
 
-    public GameObject CityInstance;
+    
 
 
-
-    private List<CityHandler> cityHandlers;
-
-
-    public void RunGenerator()
+    private void Start()
     {
-        RefreshGenerator();
-
-        GenerateInfoGrid();
-        PlaceLocationPositions();
-        GenerateLocations();
+        spawnCount = amount;
     }
+
+
+    public void RunGeneratorTemp()
+    {
+        //temp Generator that generates a single city
+        manager.Handlers = new List<CityHandler>();
+
+        var newCity = Instantiate(CityInstance, Vector3.zero, quaternion.identity);
+        
+        manager.Handlers.Add(newCity.GetComponent<CityHandler>());
+    }
+    
+
 
     public void RefreshGenerator()
     {
-        foreach (var script in cityHandlers)
+        //if cityhandler invalid then no refresh nessesary
+        if (manager.Handlers == null)
         {
+            print("No Previous CityHandlers");
+            return;
+        }
+            
+        print("Previous CityHandlers Found. Purging");
+        //Destroy all Cityhandlers and their respective Prefabs
+        foreach (var script in manager.Handlers)
+        {
+            
             Destroy(script.gameObject);
         }
     }
 
     public bool allBuildingsPlaced() {
 
-        if (
-            nonPlacedCities == 0
-        )
-        {
+        if (spawnCount == 0)
             return true;
-        }
+        
         return false;
     }
 
-    public void SubTractNonPlacedCities()
-    {
-        nonPlacedCities--;
-    }
+    public void SubTractPlacedCities()
+        => spawnCount--;
+    
 
     public void GenerateInfoGrid() {
 
-        System.Random seed = new System.Random(Seed);
+        
 
-        posCoords = new int[chunkSize, chunkSize];
-        DataGrid = new ChunkData[chunkSize, chunkSize];
+        posCoords = new int[spawnAreaSize, spawnAreaSize];
+        DataGrid = new ChunkData[spawnAreaSize, spawnAreaSize];
 
-        for (int y = 0; y < chunkSize; y++) {
-            for (int x = 0; x < chunkSize; x++) {
+        for (int y = 0; y < spawnAreaSize; y++) {
+            for (int x = 0; x < spawnAreaSize; x++) {
 
                 ChunkData chunkData = new ChunkData();
                 chunkData.Populate();
@@ -87,12 +111,12 @@ public class CityGenerator : MonoBehaviour
 
             allBuildingsPlaced();
 
-            for (int y = 0; y < chunkSize; y++) {
-                for (int x = 0; x < chunkSize; x++) {
+            for (int y = 0; y < spawnAreaSize; y++) {
+                for (int x = 0; x < spawnAreaSize; x++) {
 
                     int roll = Random.Range(0, 100);
 
-                    float percentage = Cities / chunkSize;
+                    float percentage = amount / spawnAreaSize;
 
                     if (roll >= percentage && DataGrid[x, y].settled)
                     {
@@ -100,7 +124,7 @@ public class CityGenerator : MonoBehaviour
                     }
                 }
             }
-            SubTractNonPlacedCities();
+            SubTractPlacedCities();
         }
     }
 
@@ -111,23 +135,25 @@ public class CityGenerator : MonoBehaviour
 
     public void GenerateCities()
     {
-        for (int y = 0; y < chunkSize; y++)
+        for (int y = 0; y < spawnAreaSize; y++)
         {
-            for (int x = 0; x < chunkSize; x++)
+            for (int x = 0; x < spawnAreaSize; x++)
             {
                 if (DataGrid[x, y].settled)
                 {
                     var instance = Instantiate(CityInstance, new Vector3(x, 0, y), Quaternion.identity);
-                    var script = instance.GetComponent<CityHandler>();
-                    cityHandlers.Add(script);
-
-                    script.InitializeCity();
-                    script.UpdateCity();
+                    manager.Handlers.Add(instance.GetComponent<CityHandler>());
                 }
             }
         }
     }
+
+
+    
+
 }
+
+
 
 
 
@@ -136,7 +162,7 @@ public class ChunkData
 {
     //public E_Biome biome;
     public bool settled;
-
+    
     public void Populate()
     {
         settled = true;

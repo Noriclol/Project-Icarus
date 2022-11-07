@@ -44,8 +44,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4b0d09478fb2604bbd56b495b7d8e69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CityPrefab: {fileID: 0}
-  Cities: []
+  CityPrefab: {fileID: 5960730876197631886, guid: 67f9d37c7201fdb4a91fba3cb5d0659d,
+    type: 3}
+  Handlers: []
 --- !u!1 &2728710196418781224
 GameObject:
   m_ObjectHideFlags: 0
@@ -90,12 +91,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7071a5b93e85b2f4aa7da5ebfc058f23, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Seed: 0
-  MinHeight: 0
-  MaxHeight: 0
-  OnInspectorEditorBoolCheck: 0
   CityInstance: {fileID: 5960730876197631886, guid: 67f9d37c7201fdb4a91fba3cb5d0659d,
     type: 3}
+  spawnAreaSize: 100
+  seed: 0
+  amount: 10
 --- !u!1 &3496129603738450697
 GameObject:
   m_ObjectHideFlags: 0
