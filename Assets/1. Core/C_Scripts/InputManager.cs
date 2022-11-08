@@ -102,6 +102,7 @@
         KEYBOARD_E.Enable();
         
         KEYBOARD_WASD.performed += EVENT_PLAYER_MOVEMENT;
+        KEYBOARD_WASD.canceled += EVENT_PLAYER_MOVEMENT;
         KEYBOARD_SPACEBAR.performed += EVENT_PLAYER_JUMP;
         KEYBOARD_E.performed += EVENT_PLAYER_INTERACT;
     }
@@ -115,6 +116,7 @@
         KEYBOARD_E.Disable();
         
         KEYBOARD_WASD.performed -= EVENT_PLAYER_MOVEMENT;
+        KEYBOARD_WASD.canceled -= EVENT_PLAYER_MOVEMENT;
         KEYBOARD_SPACEBAR.performed -= EVENT_PLAYER_JUMP;
         KEYBOARD_E.performed -= EVENT_PLAYER_INTERACT;
     }

@@ -35,7 +35,7 @@ public class GameManager : MonoBehaviour
     }
 
 
-    private void BindPlayer()
+    public void BindPlayer()
     {
         InputManager.Move += playerController.OnMoveInput;
         InputManager.Jump += playerController.OnJump;
@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviour
     }
 
 
-    private void UnbindPlayer()
+    public void UnbindPlayer()
     {
         InputManager.Move -= playerController.OnMoveInput;
         InputManager.Jump -= playerController.OnJump;
@@ -83,24 +83,26 @@ public class GameManager : MonoBehaviour
     }
 
 
-    private void PlayerInit()
+    public void PlayerInit()
     {
-        var playerSpawnPos = Instances.transform.position;
-        var PlayerInstance = Instantiate(PlayerPrefab, playerSpawnPos, quaternion.identity);
-        playerController = PlayerInstance.GetComponent<PlayerController>();
+        var cameraInstance = Instantiate(CameraPrefab, Vector3.zero, quaternion.identity);
+        
+        var playerSpawnPos = PlayerSpawn.transform.position;
+        var playerInstance = Instantiate(PlayerPrefab, playerSpawnPos, quaternion.identity);
+        playerController = playerInstance.GetComponent<PlayerController>();
+        playerController.camPos = cameraInstance.transform;
     }
     
     public void GameInit()
     {
-        GameGenInit();
-        PlayerInit();
+        //GameGenInit();
     }
 
     public void LateUpdate()
     {
         
         //Update Managers
-        _manager_city.UpdateCities();
+        //_manager_city.UpdateCities();
     }
 
 

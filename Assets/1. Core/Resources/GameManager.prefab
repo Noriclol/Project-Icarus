@@ -44,8 +44,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4b0d09478fb2604bbd56b495b7d8e69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CityPrefab: {fileID: 5960730876197631886, guid: 67f9d37c7201fdb4a91fba3cb5d0659d,
-    type: 3}
   Handlers: []
 --- !u!1 &2728710196418781224
 GameObject:
@@ -177,3 +175,9 @@ MonoBehaviour:
   Generators: {fileID: 2728710196418781224}
   Managers: {fileID: 1426680664002521791}
   Instances: {fileID: 3496129603738450697}
+  PlayerPrefab: {fileID: 5857129678816429001, guid: 42c845d128b6d114fa5beb5742fedae3,
+    type: 3}
+  CameraPrefab: {fileID: 7416435819071482539, guid: 1678bc5a86e20294f984570c230dfa2d,
+    type: 3}
+  PlayerSpawn: {fileID: 0}
+  playerController: {fileID: 0}

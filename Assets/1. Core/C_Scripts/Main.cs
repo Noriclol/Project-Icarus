@@ -26,7 +26,7 @@ public class Main : MonoBehaviour
     
     //GameManager
     
-    public GameManager GameManager;
+    public static GameManager GameManager;
     // region  Components - END
     
     
@@ -71,7 +71,7 @@ public class Main : MonoBehaviour
         GameObject.DontDestroyOnLoad(gameManager);
         Debug.Log("GameManager Loaded");
 
-        instance.GameManager = gameManager.GetComponent<GameManager>();
+        Main.GameManager = gameManager.GetComponent<GameManager>();
 
     }
     
