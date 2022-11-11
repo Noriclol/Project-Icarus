@@ -76,7 +76,8 @@ public class PlayerController : MonoBehaviour
     private void SetMoveSpeed(int i)
     {
 
-        Vector3 newMovement = moveDirection.normalized * (TopSpeed * accelerationCurve.Evaluate(timer / topSpeedTime)) * (float)i;
+        //Vector3 newMovement = moveDirection.normalized * (TopSpeed * accelerationCurve.Evaluate(timer / topSpeedTime)) * (float)i;
+        Vector3 newMovement = moveDirection.normalized * TopSpeed;
         newMovement.y = rb.velocity.y;
         
         rb.velocity = newMovement;

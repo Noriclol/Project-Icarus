@@ -13,7 +13,10 @@ namespace Assets.ProjectVoyager.Ship
         public List<GameObject> Containers;
         public List<GameObject> Armaments;
 
-    
+        public Resource HullResource;
+
+        public Resource FloorResource;
+        
 
 
         private List<ShipTask> tasks;
