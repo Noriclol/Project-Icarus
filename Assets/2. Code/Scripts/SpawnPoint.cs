@@ -5,11 +5,12 @@ using UnityEngine;
 public class SpawnPoint : MonoBehaviour
 {
     // Start is called before the first frame update
-    void Start()
-    {
-        Main.GameManager.PlayerSpawn = this.gameObject;
-        Main.GameManager.PlayerInit();
-        Main.GameManager.BindPlayer();
-    }
+    // private IEnumerator Start()
+    // {
+    //     yield return new WaitForSeconds(0);
+    //     GameManager.Instance.PlayerSpawn = this.gameObject;
+    //     GameManager.Instance.PlayerInit();
+    //     GameManager.Instance.BindPlayer();
+    // }
 
 }

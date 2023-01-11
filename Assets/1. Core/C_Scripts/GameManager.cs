@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+public class GameManager : Singleton<GameManager>
 {
 
     public GameObject Generators;
@@ -15,19 +15,19 @@ public class GameManager : MonoBehaviour
     public GameObject CameraPrefab;
 
     public GameObject PlayerSpawn;
-    
+
     public PlayerController playerController;
-    
-    
+
+
     //Generators
-    private CityGenerator _generator_city;
+    private CityGenerator generator_city;
 
     //Managers
-    private CityManager _manager_city;
+    private CityManager manager_city;
 
-    
-    
-    
+
+
+
 
     private void Start()
     {
@@ -53,46 +53,46 @@ public class GameManager : MonoBehaviour
     //Fetch all Generators
     private void FetchGenerators()
     {
-        _generator_city = Generators.GetComponent<CityGenerator>();
+        generator_city = Generators.GetComponent<CityGenerator>();
     }
 
     //Fetch all Managers
     private void FetchManagers()
     {
-        _manager_city = Managers.GetComponent<CityManager>();
+        manager_city = Managers.GetComponent<CityManager>();
     }
 
     private void RunGenerators()
     {
-        _generator_city.RunGeneratorTemp();
+        generator_city.RunGeneratorTemp();
     }
 
     private void GameGenInit()
     {
-                
+
         //FetchAllReferences
         FetchGenerators();
         FetchManagers();
-        
+
         //Run Generators
         RunGenerators();
-        
-        
+
+
         //Initialize Managers
-        _manager_city.InitializeCities();
+        manager_city.InitializeCities();
     }
 
 
     public void PlayerInit()
     {
         var cameraInstance = Instantiate(CameraPrefab, Vector3.zero, quaternion.identity);
-        
+
         var playerSpawnPos = PlayerSpawn.transform.position;
         var playerInstance = Instantiate(PlayerPrefab, playerSpawnPos, quaternion.identity);
         playerController = playerInstance.GetComponent<PlayerController>();
         playerController.camPos = cameraInstance.transform;
     }
-    
+
     public void GameInit()
     {
         //GameGenInit();
@@ -100,7 +100,7 @@ public class GameManager : MonoBehaviour
 
     public void LateUpdate()
     {
-        
+
         //Update Managers
         //_manager_city.UpdateCities();
     }
@@ -108,6 +108,6 @@ public class GameManager : MonoBehaviour
 
     public void GameEnd()
     {
-        
+
     }
 }
