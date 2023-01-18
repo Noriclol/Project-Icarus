@@ -99,6 +99,7 @@ public class PlayerController : MonoBehaviour
 
     public void OnJump()
     {
+        rb.AddForce(playerObj.up * JumpForce * 150);
         print($"Jumping");
     }
     public void OnInteract()

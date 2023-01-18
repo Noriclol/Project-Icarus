@@ -12,12 +12,15 @@ public class GameManager : Singleton<GameManager>
     public GameObject Instances;
 
     public GameObject PlayerPrefab;
+    public GameObject ShipPrefab;
+    
     public GameObject CameraPrefab;
 
     public GameObject PlayerSpawn;
 
     public PlayerController playerController;
 
+    public ShipController shipController;
 
     //Generators
     private CityGenerator generator_city;
@@ -50,6 +53,24 @@ public class GameManager : Singleton<GameManager>
         InputManager.Interact -= playerController.OnInteract;
     }
 
+    
+    public void BindShip()
+    {
+         InputManager.TurnShip += shipController.RegisterTurn;
+
+    }
+
+
+    public void UnbindShip()
+    {
+        InputManager.TurnShip -= shipController.RegisterTurn;
+
+    }
+    
+    
+    
+    
+    
     //Fetch all Generators
     private void FetchGenerators()
     {
@@ -92,6 +113,13 @@ public class GameManager : Singleton<GameManager>
         playerController = playerInstance.GetComponent<PlayerController>();
         playerController.camPos = cameraInstance.transform;
     }
+
+    public void ShipInit()
+    {
+        
+    }
+    
+    
 
     public void GameInit()
     {

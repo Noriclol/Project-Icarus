@@ -182,6 +182,98 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Ship"",
+            ""id"": ""40e69671-9879-41f9-ada6-46e857f0ed4f"",
+            ""actions"": [
+                {
+                    ""name"": ""Sails"",
+                    ""type"": ""Button"",
+                    ""id"": ""e11b818a-7f75-462b-b44e-ceb9d708cc24"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Rudder"",
+                    ""type"": ""Button"",
+                    ""id"": ""c251253e-8da9-4b33-a827-3b4faa916884"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": ""1D Axis"",
+                    ""id"": ""fdf65b05-b3eb-4acd-8f14-9c27e234b368"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Sails"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""27c14b1d-ff90-4033-a288-36d8b48fbab0"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Sails"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""bdbd1d33-afbb-491f-8a63-6e02704db8ed"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Sails"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Left/Right"",
+                    ""id"": ""a74e5611-f080-46d1-ad27-29288927e758"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Rudder"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""b56c9b16-4a81-4365-bdb6-5b9084b446f5"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Rudder"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""5a72f7e3-3bd3-44dd-8f45-3f5987f323d2"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Rudder"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -212,6 +304,10 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_PauseMenu = m_UI.FindAction("PauseMenu", throwIfNotFound: true);
         m_UI_Inventory = m_UI.FindAction("Inventory", throwIfNotFound: true);
+        // Ship
+        m_Ship = asset.FindActionMap("Ship", throwIfNotFound: true);
+        m_Ship_Sails = m_Ship.FindAction("Sails", throwIfNotFound: true);
+        m_Ship_Rudder = m_Ship.FindAction("Rudder", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -357,6 +453,47 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
         }
     }
     public UIActions @UI => new UIActions(this);
+
+    // Ship
+    private readonly InputActionMap m_Ship;
+    private IShipActions m_ShipActionsCallbackInterface;
+    private readonly InputAction m_Ship_Sails;
+    private readonly InputAction m_Ship_Rudder;
+    public struct ShipActions
+    {
+        private @InputMaster m_Wrapper;
+        public ShipActions(@InputMaster wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Sails => m_Wrapper.m_Ship_Sails;
+        public InputAction @Rudder => m_Wrapper.m_Ship_Rudder;
+        public InputActionMap Get() { return m_Wrapper.m_Ship; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(ShipActions set) { return set.Get(); }
+        public void SetCallbacks(IShipActions instance)
+        {
+            if (m_Wrapper.m_ShipActionsCallbackInterface != null)
+            {
+                @Sails.started -= m_Wrapper.m_ShipActionsCallbackInterface.OnSails;
+                @Sails.performed -= m_Wrapper.m_ShipActionsCallbackInterface.OnSails;
+                @Sails.canceled -= m_Wrapper.m_ShipActionsCallbackInterface.OnSails;
+                @Rudder.started -= m_Wrapper.m_ShipActionsCallbackInterface.OnRudder;
+                @Rudder.performed -= m_Wrapper.m_ShipActionsCallbackInterface.OnRudder;
+                @Rudder.canceled -= m_Wrapper.m_ShipActionsCallbackInterface.OnRudder;
+            }
+            m_Wrapper.m_ShipActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @Sails.started += instance.OnSails;
+                @Sails.performed += instance.OnSails;
+                @Sails.canceled += instance.OnSails;
+                @Rudder.started += instance.OnRudder;
+                @Rudder.performed += instance.OnRudder;
+                @Rudder.canceled += instance.OnRudder;
+            }
+        }
+    }
+    public ShipActions @Ship => new ShipActions(this);
     private int m_KeyboardMouseSchemeIndex = -1;
     public InputControlScheme KeyboardMouseScheme
     {
@@ -376,5 +513,10 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
     {
         void OnPauseMenu(InputAction.CallbackContext context);
         void OnInventory(InputAction.CallbackContext context);
+    }
+    public interface IShipActions
+    {
+        void OnSails(InputAction.CallbackContext context);
+        void OnRudder(InputAction.CallbackContext context);
     }
 }
