@@ -66,6 +66,9 @@
         public static event Action<float> TurnShip = delegate { };  
         
         public static event Action AccelerateShip = delegate { };
+        
+        public static event Action SwitchController = delegate {  };
+        
     // region  EventActions - END
     
     
@@ -75,16 +78,17 @@
     
     // region  Events - BEGIN
     
-    private void EVENT_PLAYER_MOVEMENT(InputAction.CallbackContext ctx) => Move.Invoke(KEYBOARD_WASD.ReadValue<Vector2>());
-
-    private void EVENT_PLAYER_JUMP(InputAction.CallbackContext ctx) => Jump.Invoke();
-    private void EVENT_PLAYER_INTERACT(InputAction.CallbackContext ctx) => Interact.Invoke();
-
-
-    private void EVENT_SHIP_TURN(InputAction.CallbackContext ctx) => TurnShip.Invoke(ctx.ReadValue<float>());
+        private void EVENT_PLAYER_MOVEMENT(InputAction.CallbackContext ctx) => Move.Invoke(KEYBOARD_WASD.ReadValue<Vector2>());
     
-    private void EVENT_SHIP_ACC(InputAction.CallbackContext ctx) => AccelerateShip.Invoke();
+        private void EVENT_PLAYER_JUMP(InputAction.CallbackContext ctx) => Jump.Invoke();
+        private void EVENT_PLAYER_INTERACT(InputAction.CallbackContext ctx) => Interact.Invoke();
     
+    
+        private void EVENT_SHIP_TURN(InputAction.CallbackContext ctx) => TurnShip.Invoke(ctx.ReadValue<float>());
+        
+        private void EVENT_SHIP_ACC(InputAction.CallbackContext ctx) => AccelerateShip.Invoke();
+
+        private void EVENT_GENERAL_SWITCH(InputAction.CallbackContext ctx) => SwitchController.Invoke();
     
     // region  Events - END
 
@@ -162,13 +166,5 @@
         shipAcc.canceled -= EVENT_SHIP_ACC;
         
         
-    }
-
-    
-    
-    
-    
-    
-    // region  Core - END
-
+    } 
 }

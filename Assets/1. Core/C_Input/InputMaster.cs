@@ -274,6 +274,34 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 }
             ]
+        },
+        {
+            ""name"": ""General"",
+            ""id"": ""4a8ba19f-343f-453b-97a2-c612775c5b3c"",
+            ""actions"": [
+                {
+                    ""name"": ""SwitchController"",
+                    ""type"": ""Button"",
+                    ""id"": ""4ac973e4-4a90-4c51-a95a-1875ddb84c32"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""a532e1c3-e45f-4988-9a59-d253208d6da3"",
+                    ""path"": ""<Keyboard>/i"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""SwitchController"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -308,6 +336,9 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
         m_Ship = asset.FindActionMap("Ship", throwIfNotFound: true);
         m_Ship_Sails = m_Ship.FindAction("Sails", throwIfNotFound: true);
         m_Ship_Rudder = m_Ship.FindAction("Rudder", throwIfNotFound: true);
+        // General
+        m_General = asset.FindActionMap("General", throwIfNotFound: true);
+        m_General_SwitchController = m_General.FindAction("SwitchController", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -494,6 +525,39 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
         }
     }
     public ShipActions @Ship => new ShipActions(this);
+
+    // General
+    private readonly InputActionMap m_General;
+    private IGeneralActions m_GeneralActionsCallbackInterface;
+    private readonly InputAction m_General_SwitchController;
+    public struct GeneralActions
+    {
+        private @InputMaster m_Wrapper;
+        public GeneralActions(@InputMaster wrapper) { m_Wrapper = wrapper; }
+        public InputAction @SwitchController => m_Wrapper.m_General_SwitchController;
+        public InputActionMap Get() { return m_Wrapper.m_General; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(GeneralActions set) { return set.Get(); }
+        public void SetCallbacks(IGeneralActions instance)
+        {
+            if (m_Wrapper.m_GeneralActionsCallbackInterface != null)
+            {
+                @SwitchController.started -= m_Wrapper.m_GeneralActionsCallbackInterface.OnSwitchController;
+                @SwitchController.performed -= m_Wrapper.m_GeneralActionsCallbackInterface.OnSwitchController;
+                @SwitchController.canceled -= m_Wrapper.m_GeneralActionsCallbackInterface.OnSwitchController;
+            }
+            m_Wrapper.m_GeneralActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @SwitchController.started += instance.OnSwitchController;
+                @SwitchController.performed += instance.OnSwitchController;
+                @SwitchController.canceled += instance.OnSwitchController;
+            }
+        }
+    }
+    public GeneralActions @General => new GeneralActions(this);
     private int m_KeyboardMouseSchemeIndex = -1;
     public InputControlScheme KeyboardMouseScheme
     {
@@ -518,5 +582,9 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
     {
         void OnSails(InputAction.CallbackContext context);
         void OnRudder(InputAction.CallbackContext context);
+    }
+    public interface IGeneralActions
+    {
+        void OnSwitchController(InputAction.CallbackContext context);
     }
 }

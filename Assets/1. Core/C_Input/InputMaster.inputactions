@@ -252,6 +252,34 @@
                     "isPartOfComposite": true
                 }
             ]
+        },
+        {
+            "name": "General",
+            "id": "4a8ba19f-343f-453b-97a2-c612775c5b3c",
+            "actions": [
+                {
+                    "name": "SwitchController",
+                    "type": "Button",
+                    "id": "4ac973e4-4a90-4c51-a95a-1875ddb84c32",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "a532e1c3-e45f-4988-9a59-d253208d6da3",
+                    "path": "<Keyboard>/i",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardMouse",
+                    "action": "SwitchController",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": [
