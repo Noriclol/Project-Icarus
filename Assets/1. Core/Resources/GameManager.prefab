@@ -177,7 +177,14 @@ MonoBehaviour:
   Instances: {fileID: 3496129603738450697}
   PlayerPrefab: {fileID: 5857129678816429001, guid: 42c845d128b6d114fa5beb5742fedae3,
     type: 3}
+  ShipPrefab: {fileID: 1197390879779222132, guid: d4ed5e4deb83b3f4f859f211f1a8857b,
+    type: 3}
   CameraPrefab: {fileID: 7416435819071482539, guid: 1678bc5a86e20294f984570c230dfa2d,
     type: 3}
   PlayerSpawn: {fileID: 0}
+  ShipSpawn: {fileID: 0}
+  PlayerInstance: {fileID: 0}
+  ShipInstance: {fileID: 0}
+  CameraInstance: {fileID: 0}
   playerController: {fileID: 0}
+  shipController: {fileID: 0}

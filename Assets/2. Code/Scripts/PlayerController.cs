@@ -94,16 +94,16 @@ public class PlayerController : MonoBehaviour
         }
         
         _input = input;
-        print($"input: {input}");
+        //print($"input: {input}");
     }
 
     public void OnJump()
     {
         rb.AddForce(playerObj.up * JumpForce * 150);
-        print($"Jumping");
+        //print($"Jumping");
     }
     public void OnInteract()
     {
-        print($"Interacting");
+        //print($"Interacting");
     }
 }

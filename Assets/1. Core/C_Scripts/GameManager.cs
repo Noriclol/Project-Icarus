@@ -7,41 +7,86 @@ using UnityEngine;
 public class GameManager : Singleton<GameManager>
 {
 
-    // General
+    
+    //      Fields
+    
+    //  General
     
     public GameObject Generators;
     public GameObject Managers;
     public GameObject Instances;
 
+
+    public ControlMode mode = ControlMode.Player;
     
-    // Prefabs
+    
+    //  Prefabs
     
     public GameObject PlayerPrefab;
     public GameObject ShipPrefab;
     
     public GameObject CameraPrefab;
 
-    //SpawnPoints
+    //  SpawnPoints
     
     public GameObject PlayerSpawn;
     public GameObject ShipSpawn;
     
-    //Instances
+    //  Instances
     public GameObject PlayerInstance;
     public GameObject ShipInstance;
-
     public GameObject CameraInstance;
     
-    // Controllers
+    
+    
+    //  Controllers
+    [HideInInspector]
     public PlayerController playerController;
+    [HideInInspector]
     public ShipController shipController;
 
-    //Generators
+    
+    //  Generators
     private CityGenerator generator_city;
 
-    //Managers
+    //  Managers
     private CityManager manager_city;
 
+    
+    
+    
+    
+    
+    
+    //      GameManager Constructor Destructor
+    public void GameInit()
+    {
+        
+        BindGeneral();
+        
+        //  GameGenInit();
+        CameraInit();
+
+        if (!PlayerSpawn && !ShipSpawn)
+            Debug.Log("no Spawnpoint found");
+
+        if (PlayerSpawn)
+        {
+            PlayerInit();
+        }
+        
+        if (ShipSpawn)
+            ShipInit();
+        
+    }
+    
+
+    public void GameEnd()
+    {
+        UnbindGeneral();
+    }
+    
+    
     #region Unity
 
     private void Start()
@@ -61,48 +106,106 @@ public class GameManager : Singleton<GameManager>
 
     #endregion
 
+    
+    
+    
+    
+    
+    //      Binds/ Unbinds
     public void BindGeneral()
     {
-        InputManager.SwitchController += 
+        Debug.Log("General Bound");
 
+        InputManager.SwitchController += SwitchControllers;
     }
     
     public void BindPlayer()
     {
+        Debug.Log("Player Bound");
         InputManager.Move += playerController.OnMoveInput;
         InputManager.Jump += playerController.OnJump;
         InputManager.Interact += playerController.OnInteract;
     }
+    
+    public void BindShip()
+    {
+        Debug.Log("Ship Bound");
 
+        //InputManager.TurnShip += shipController.RegisterTurn;
+    }
+
+
+
+
+    public void UnbindGeneral()
+    {
+        Debug.Log("General Unbound");
+
+        InputManager.SwitchController -= SwitchControllers;
+    }
 
     public void UnbindPlayer()
     {
+        Debug.Log("Player Unbound");
+
         InputManager.Move -= playerController.OnMoveInput;
         InputManager.Jump -= playerController.OnJump;
         InputManager.Interact -= playerController.OnInteract;
     }
 
     
-    public void BindShip()
-    {
-         InputManager.TurnShip += shipController.RegisterTurn;
-
-    }
-
-
     public void UnbindShip()
     {
-        InputManager.TurnShip -= shipController.RegisterTurn;
+        Debug.Log("Ship Unbound");
 
+        //InputManager.TurnShip -= shipController.RegisterTurn;
     }
 
 
 
 
 
+    public void TestFunc()
+    {
+        Debug.Log("Testing the I button");
+    }
+    
+    
+    
+    //      General Controls
+    
+    [ContextMenu("!")]
     public void SwitchControllers()
     {
         
+        Debug.Log("SwitchController");
+        BindPlayer();
+        BindShip();
+        
+        string namething = ""; 
+        switch (mode)
+        {
+            case ControlMode.Player:
+                //Player
+                //UnbindShip();
+
+                namething = "Player";
+                mode = ControlMode.Player;
+                break;
+            
+            
+            case ControlMode.Ship:
+                
+                //UnbindPlayer();
+                
+                namething = "Ship";
+                mode = ControlMode.Ship;
+                break;
+        }
+        
+        
+        Debug.Log($"Switching to {namething}");
+
     }
     
     
@@ -185,26 +288,5 @@ public class GameManager : Singleton<GameManager>
     
     
 
-    public void GameInit()
-    {
-        //GameGenInit();
-        CameraInit();
 
-        if (!PlayerSpawn && !ShipSpawn)
-            Debug.Log("no Spawnpoint found");
-
-        if (PlayerSpawn)
-            PlayerInit();
-        
-        if (ShipSpawn)
-            ShipInit();
-    }
-
-
-
-
-    public void GameEnd()
-    {
-
-    }
 }

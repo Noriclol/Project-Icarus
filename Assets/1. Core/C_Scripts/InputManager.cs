@@ -113,6 +113,12 @@
     {
         input.Enable();
 
+
+        KEYBOARD_I = input.General.SwitchController;
+        
+        KEYBOARD_I.Enable();
+        KEYBOARD_I.performed += EVENT_GENERAL_SWITCH;
+        
         KEYBOARD_WASD = input.Player.Movement;
         KEYBOARD_SPACEBAR = input.Player.Jump;
         KEYBOARD_E = input.Player.Interact;

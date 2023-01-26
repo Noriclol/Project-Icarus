@@ -20,14 +20,10 @@ public class Main : Singleton<Main>
     public InputManager InputManager;
     
     public LevelManager LevelManager;
-    
-
-    
     private new void Awake()
     {
         InputManager = GetComponent<InputManager>();
         LevelManager = GetComponent<LevelManager>();
-
     }
 
 
@@ -38,7 +34,7 @@ public class Main : Singleton<Main>
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
     private static void PostLoad_AfterSceneLoad()
     {
-        
+        //base.
         
         // collect Spawnpoints
         
@@ -62,14 +58,17 @@ public class Main : Singleton<Main>
                     GameManager.Instance.PlayerSpawn = point.gameObject;
                     break;
                 case SpawnType.PlayerShip:
-                    
+                    GameManager.Instance.ShipSpawn = point.gameObject;
                     break;
             }
         }
         
         
         //var instance = GameManager.Instance;
-        var instance = Instantiate(Resources.Load("GameManager")) as GameObject;
+        //var instance = Instantiate(Resources.Load("GameManager"));
+        
+        
+        
     }
     
     // region  Initialization - END
