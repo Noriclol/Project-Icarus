@@ -632,7 +632,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2074076137
 Transform:
   m_ObjectHideFlags: 0
@@ -921,6 +921,7 @@ MonoBehaviour:
   rb: {fileID: 5857129678816429003}
   orientation: {fileID: 5857129679821252701}
   playerObj: {fileID: 8066427637194183580}
+  vCam: {fileID: 2074076136}
   camPos: {fileID: 2074076137}
   TopSpeed: 9.23
   topSpeedTime: 2

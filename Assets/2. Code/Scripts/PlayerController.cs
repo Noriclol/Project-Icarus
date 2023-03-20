@@ -19,7 +19,7 @@ public class PlayerController : MonoBehaviour
     
     //refs
     private GameObject PlayerObject;
-    private GameObject vCam;
+    public GameObject vCam;
     public Transform camPos;
         
     //Fields
@@ -100,7 +100,7 @@ public class PlayerController : MonoBehaviour
     public void OnJump()
     {
         rb.AddForce(playerObj.up * JumpForce * 150);
-        //print($"Jumping");
+        print($"Jumping");
     }
     public void OnInteract()
     {

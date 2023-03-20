@@ -189,21 +189,21 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
             ""actions"": [
                 {
                     ""name"": ""Sails"",
-                    ""type"": ""Button"",
+                    ""type"": ""Value"",
                     ""id"": ""e11b818a-7f75-462b-b44e-ceb9d708cc24"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": ""Axis"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": false
+                    ""initialStateCheck"": true
                 },
                 {
                     ""name"": ""Rudder"",
-                    ""type"": ""Button"",
+                    ""type"": ""Value"",
                     ""id"": ""c251253e-8da9-4b33-a827-3b4faa916884"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": ""Axis"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": false
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -224,7 +224,7 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/s"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""KeyboardMouse"",
                     ""action"": ""Sails"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -235,7 +235,7 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/w"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""KeyboardMouse"",
                     ""action"": ""Sails"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -257,7 +257,7 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/a"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""KeyboardMouse"",
                     ""action"": ""Rudder"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -268,7 +268,7 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/d"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""KeyboardMouse"",
                     ""action"": ""Rudder"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true

@@ -73,10 +73,14 @@ public class GameManager : Singleton<GameManager>
         if (PlayerSpawn)
         {
             PlayerInit();
+            Debug.Log("Player Spawned");
+
         }
-        
         if (ShipSpawn)
+        {
             ShipInit();
+            Debug.Log("Ship Spawned");
+        }
         
     }
     
@@ -92,6 +96,7 @@ public class GameManager : Singleton<GameManager>
     private void Start()
     {
         GameInit();
+        InitialControllerBind();
     }
     
     
@@ -125,13 +130,17 @@ public class GameManager : Singleton<GameManager>
         InputManager.Move += playerController.OnMoveInput;
         InputManager.Jump += playerController.OnJump;
         InputManager.Interact += playerController.OnInteract;
+        playerController.vCam.SetActive(true);
     }
     
     public void BindShip()
     {
         Debug.Log("Ship Bound");
+            
+        InputManager.TurnShip += shipController.RegisterTurn;
+        InputManager.AccelerateShip += shipController.RegisterSpeed;
+        shipController.vCam.SetActive(true);
 
-        //InputManager.TurnShip += shipController.RegisterTurn;
     }
 
 
@@ -151,14 +160,16 @@ public class GameManager : Singleton<GameManager>
         InputManager.Move -= playerController.OnMoveInput;
         InputManager.Jump -= playerController.OnJump;
         InputManager.Interact -= playerController.OnInteract;
+        playerController.vCam.SetActive(false);
     }
 
     
     public void UnbindShip()
     {
         Debug.Log("Ship Unbound");
-
-        //InputManager.TurnShip -= shipController.RegisterTurn;
+        InputManager.TurnShip -= shipController.RegisterTurn;
+        InputManager.AccelerateShip -= shipController.RegisterSpeed;
+        shipController.vCam.SetActive(false);
     }
 
 
@@ -169,7 +180,24 @@ public class GameManager : Singleton<GameManager>
     {
         Debug.Log("Testing the I button");
     }
-    
+
+
+
+    private void InitialControllerBind()
+    {
+        switch (mode)
+        {
+            case ControlMode.Camera:
+                break;
+            
+            case ControlMode.Player:
+                BindPlayer();
+                break;
+            case ControlMode.Ship:
+                BindShip();
+                break;
+        }
+    }
     
     
     //      General Controls
@@ -179,25 +207,24 @@ public class GameManager : Singleton<GameManager>
     {
         
         Debug.Log("SwitchController");
-        BindPlayer();
-        BindShip();
         
         string namething = ""; 
         switch (mode)
         {
-            case ControlMode.Player:
-                //Player
-                //UnbindShip();
+            case ControlMode.Ship:
+                
+                UnbindShip();
+                BindPlayer();
 
                 namething = "Player";
                 mode = ControlMode.Player;
                 break;
             
-            
-            case ControlMode.Ship:
+            case ControlMode.Player:
                 
-                //UnbindPlayer();
-                
+                UnbindPlayer();
+                BindShip();
+
                 namething = "Ship";
                 mode = ControlMode.Ship;
                 break;
