@@ -2,23 +2,23 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Assets.ProjectVoyager.Ship
 {
     public class ShipHandler : MonoBehaviour
     {
+        // Ship Parts
         public List<GameObject> HullParts;
         public List<GameObject> Masts;
-
         public List<GameObject> Containers;
         public List<GameObject> Armaments;
-
-        public Resource HullResource;
-
-        public Resource FloorResource;
         
+        
+        [FormerlySerializedAs("HullResource")] public CraftingResource hullCraftingResource;
 
-
+        [FormerlySerializedAs("FloorResource")] public CraftingResource floorCraftingResource;
+        
         private List<ShipTask> tasks;
 
         public class CannonDeck
@@ -37,29 +37,7 @@ namespace Assets.ProjectVoyager.Ship
 
     public class Crewmate
     {
-        public string Name;
-
-        static System.Random _R = new System.Random();
-        static T RandomEnumValue<T>()
-        {
-            var v = Enum.GetValues(typeof(T));
-            return (T)v.GetValue(_R.Next(v.Length));
-        }
-
-
-
-
-        public string GenerateName()
-        {
-            string firstName = RandomEnumValue<FirstName>().ToString();
-            string lastName = RandomEnumValue<LastName>().ToString();
-
-            return $"{firstName} {lastName}";
-        }
-
-
-
-
+        
 
         public enum FirstName
         {

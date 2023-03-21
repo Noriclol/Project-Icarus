@@ -11,7 +11,6 @@ public class GameManager : Singleton<GameManager>
     //      Fields
     
     //  General
-    
     public GameObject Generators;
     public GameObject Managers;
     public GameObject Instances;
@@ -19,24 +18,21 @@ public class GameManager : Singleton<GameManager>
 
     public ControlMode mode = ControlMode.Player;
     
-    
     //  Prefabs
-    
     public GameObject PlayerPrefab;
     public GameObject ShipPrefab;
-    
     public GameObject CameraPrefab;
 
-    //  SpawnPoints
     
+    //  SpawnPoints
     public GameObject PlayerSpawn;
     public GameObject ShipSpawn;
+    
     
     //  Instances
     public GameObject PlayerInstance;
     public GameObject ShipInstance;
     public GameObject CameraInstance;
-    
     
     
     //  Controllers

@@ -22,7 +22,7 @@ public class CityHandler : MonoBehaviour
     [SerializeField]
     private CityBuildings Buildings;
 
-    private List<Resource> nearbyResources;
+    private List<CraftingResource> nearbyResources;
 
 
 

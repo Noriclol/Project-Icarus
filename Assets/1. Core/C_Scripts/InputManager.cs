@@ -30,6 +30,10 @@
 
         private InputAction KEYBOARD_WASD;
 
+        private InputAction KEYBOARD_AD;
+        
+        private InputAction KEYBOARD_WS;
+                
         private InputAction KEYBOARD_Q;
 
         private InputAction KEYBOARD_E;
@@ -45,8 +49,7 @@
 
 
 
-        private InputAction ShipTurn;
-        private InputAction shipAcc;
+
 
 
         // region  Components - END
@@ -66,7 +69,9 @@
         public static event Action<float> TurnShip = delegate { };  
         
         public static event Action<float> AccelerateShip = delegate { };
-        
+
+        public static event Action<Vector2> SteerShip = delegate {  };
+
         public static event Action SwitchController = delegate {  };
         
     // region  EventActions - END
@@ -91,11 +96,13 @@
         private void EVENT_SHIP_TURN(InputAction.CallbackContext ctx)
         {
             TurnShip.Invoke(ctx.ReadValue<float>());
-            Debug.Log($"TurninginInputManager");
+            Debug.Log($"Turninging IM");
         } 
         
         private void EVENT_SHIP_ACC(InputAction.CallbackContext ctx) => AccelerateShip.Invoke(ctx.ReadValue<float>());
-
+        
+        private void EVENT_SHIP_STEER(InputAction.CallbackContext ctx) => SteerShip.Invoke(ctx.ReadValue<Vector2>());
+        
         private void EVENT_GENERAL_SWITCH(InputAction.CallbackContext ctx) => SwitchController.Invoke();
     
     // region  Events - END
@@ -141,16 +148,16 @@
         KEYBOARD_E.performed += EVENT_PLAYER_INTERACT;
 
 
-        ShipTurn = input.Ship.Rudder;
-        shipAcc = input.Ship.Sails;
+        KEYBOARD_AD = input.Ship.Rudder;
+        KEYBOARD_WS = input.Ship.Sails;
         
-        ShipTurn.Enable();
-        shipAcc.Enable();
+        KEYBOARD_AD.Enable();
+        KEYBOARD_WS.Enable();
 
-        ShipTurn.performed += EVENT_SHIP_TURN;
-        ShipTurn.canceled += EVENT_SHIP_TURN;
-        shipAcc.performed += EVENT_SHIP_ACC;
-        shipAcc.canceled += EVENT_SHIP_ACC;
+        KEYBOARD_AD.performed += EVENT_SHIP_TURN;
+        KEYBOARD_AD.canceled += EVENT_SHIP_TURN;
+        KEYBOARD_WS.performed += EVENT_SHIP_ACC;
+        KEYBOARD_WS.canceled += EVENT_SHIP_ACC;
 
 
 
@@ -171,13 +178,13 @@
         
         
         
-        ShipTurn = input.Ship.Rudder;
-        shipAcc = input.Ship.Sails;
+        KEYBOARD_AD = input.Ship.Rudder;
+        KEYBOARD_WS = input.Ship.Sails;
         
-        ShipTurn.performed -= EVENT_SHIP_TURN;
-        ShipTurn.canceled -= EVENT_SHIP_TURN;
-        shipAcc.performed -= EVENT_SHIP_ACC;
-        shipAcc.canceled -= EVENT_SHIP_ACC;
+        KEYBOARD_AD.performed -= EVENT_SHIP_TURN;
+        KEYBOARD_AD.canceled -= EVENT_SHIP_TURN;
+        KEYBOARD_WS.performed -= EVENT_SHIP_ACC;
+        KEYBOARD_WS.canceled -= EVENT_SHIP_ACC;
         
         
     } 

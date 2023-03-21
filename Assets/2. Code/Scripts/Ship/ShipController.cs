@@ -6,16 +6,19 @@ using UnityEngine;
 public class ShipController : MonoBehaviour
 {
 
-
+    // Components
+    private Rigidbody rb;
+    private BoxCollider collider;
+    
     [SerializeField]
-    private float forwardInput = 1;
+    private float forwardInput = 0;
     [SerializeField]
     private float turnInput = 0;
 
     private float momentum = 0f;
 
-    private Rigidbody rb;
-    private BoxCollider collider;
+    [SerializeField]
+    private Vector2 input;
     
     [SerializeField]
     public GameObject vCam;
@@ -74,4 +77,8 @@ public class ShipController : MonoBehaviour
         forwardInput = input;
     }
 
+    public void RegisterInput(Vector2 newInput)
+    {
+        this.input = newInput;
+    }
 }

@@ -4,11 +4,11 @@ using System.Linq;
 
 public class Stockpile
 {
-    public Dictionary<Resource, int> Stock { get; private set; }
-    public List<Resource> Exports;
-    public List<Resource> Imports;
+    public Dictionary<CraftingResource, int> Stock { get; private set; }
+    public List<CraftingResource> Exports;
+    public List<CraftingResource> Imports;
 
-    private Dictionary<Resource, int> _rawIncome;
+    private Dictionary<CraftingResource, int> _rawIncome;
 
     public void UpdateStockpile(List<Building> gathererBuildings, List<Building> processingBuildings)
     {
@@ -16,7 +16,7 @@ public class Stockpile
         // Process resources
     }
 
-    public void AddToStock(Dictionary<Resource, int> resources)
+    public void AddToStock(Dictionary<CraftingResource, int> resources)
     {
         for (int i = 0; i < resources.Count; i++)
         {

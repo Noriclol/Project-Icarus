@@ -204,6 +204,15 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Movement"",
+                    ""type"": ""Value"",
+                    ""id"": ""c561e523-5601-41f7-9840-313ec57ab3e7"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -272,6 +281,61 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                     ""action"": ""Rudder"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""WASD"",
+                    ""id"": ""54d9145c-29ad-4f95-8a6c-e272a9a5e118"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""a11a64b5-9810-4305-a59a-5378e36ebc89"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""2c73316d-757d-4569-b471-dbdd575eda5a"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""6f61d2a1-6900-4b2f-b303-78a10c5dfb3b"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""988a142b-ae0a-45c4-b87b-d56811b6f08c"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         },
@@ -336,6 +400,7 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
         m_Ship = asset.FindActionMap("Ship", throwIfNotFound: true);
         m_Ship_Sails = m_Ship.FindAction("Sails", throwIfNotFound: true);
         m_Ship_Rudder = m_Ship.FindAction("Rudder", throwIfNotFound: true);
+        m_Ship_Movement = m_Ship.FindAction("Movement", throwIfNotFound: true);
         // General
         m_General = asset.FindActionMap("General", throwIfNotFound: true);
         m_General_SwitchController = m_General.FindAction("SwitchController", throwIfNotFound: true);
@@ -490,12 +555,14 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
     private IShipActions m_ShipActionsCallbackInterface;
     private readonly InputAction m_Ship_Sails;
     private readonly InputAction m_Ship_Rudder;
+    private readonly InputAction m_Ship_Movement;
     public struct ShipActions
     {
         private @InputMaster m_Wrapper;
         public ShipActions(@InputMaster wrapper) { m_Wrapper = wrapper; }
         public InputAction @Sails => m_Wrapper.m_Ship_Sails;
         public InputAction @Rudder => m_Wrapper.m_Ship_Rudder;
+        public InputAction @Movement => m_Wrapper.m_Ship_Movement;
         public InputActionMap Get() { return m_Wrapper.m_Ship; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -511,6 +578,9 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                 @Rudder.started -= m_Wrapper.m_ShipActionsCallbackInterface.OnRudder;
                 @Rudder.performed -= m_Wrapper.m_ShipActionsCallbackInterface.OnRudder;
                 @Rudder.canceled -= m_Wrapper.m_ShipActionsCallbackInterface.OnRudder;
+                @Movement.started -= m_Wrapper.m_ShipActionsCallbackInterface.OnMovement;
+                @Movement.performed -= m_Wrapper.m_ShipActionsCallbackInterface.OnMovement;
+                @Movement.canceled -= m_Wrapper.m_ShipActionsCallbackInterface.OnMovement;
             }
             m_Wrapper.m_ShipActionsCallbackInterface = instance;
             if (instance != null)
@@ -521,6 +591,9 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                 @Rudder.started += instance.OnRudder;
                 @Rudder.performed += instance.OnRudder;
                 @Rudder.canceled += instance.OnRudder;
+                @Movement.started += instance.OnMovement;
+                @Movement.performed += instance.OnMovement;
+                @Movement.canceled += instance.OnMovement;
             }
         }
     }
@@ -582,6 +655,7 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
     {
         void OnSails(InputAction.CallbackContext context);
         void OnRudder(InputAction.CallbackContext context);
+        void OnMovement(InputAction.CallbackContext context);
     }
     public interface IGeneralActions
     {
