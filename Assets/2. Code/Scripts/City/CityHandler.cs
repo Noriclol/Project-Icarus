@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -24,9 +25,7 @@ public class CityHandler : MonoBehaviour
 
     private List<CraftingResource> nearbyResources;
 
-
-
-
+    
     [Header("buildingRefs")]
     //building Refs
     [SerializeField]
@@ -48,12 +47,12 @@ public class CityHandler : MonoBehaviour
     //Properties
     
     public string CityName { get => cityName; }
-    public int Population { get => population; } 
-    
-    
-    
-    
-    
+    public int Population { get => population; }
+
+
+    public void Start() => InitializeCity();
+    public void Update() => UpdateCity();
+
     public void InitializeCity()
     {
         Buildings.CreateBuilding(townHall);
